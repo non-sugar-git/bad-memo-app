@@ -33,9 +33,9 @@ def memo_list(request: HttpRequest) -> HttpResponse:
     else:
         if q:
             memos = memos.filter(Q(title__icontains=q) | Q(body__icontains=q))
+            memos = memos.order_by('-created_at')
         if tag:
             memos = memos.filter(tags__name=tag)
-        memos = memos.order_by('-created_at')
 
 
     context = {
