@@ -32,13 +32,8 @@ def memo_list(request: HttpRequest) -> HttpResponse:
 
     else:
         if q:
-            sql = (
-                "SELECT * FROM memos_memo "
-                "WHERE title LIKE '%" + q + "%' "
-                "OR body LIKE '%" + q + "%' "
-                "ORDER BY created_at DESC"
-            )
-            memos = Memo.objects.raw(sql)
+            memos = memos.filter(Q(title__icontains=q) | Q(body__icontains=q))
+            memos = memos.order_by('-created_at')
         if tag:
             memos = memos.filter(tags__name=tag)
 
